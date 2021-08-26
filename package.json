@@ -1,0 +1,11 @@
+{
+  "name": "node_web",
+  "version": "1.0.0",
+  "description": "노드 연습용",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "김기태",
+  "license": "ISC"
+}

@@ -6,7 +6,7 @@ const session = require('express-session');
 const dotenv = require('dotenv');               // .env 파일을 읽어서 process.env 로 만듦
 const path = require('path');                   // 경로 설정 
 const multer = require('multer');               // 파일 업로드 처리 
-const fs = require('fs');
+const fs = require('fs');                       // 파일 관리 
 
 dotenv.config();
 

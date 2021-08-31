@@ -8,12 +8,25 @@ const path = require('path');                   // 경로 설정
 const multer = require('multer');               // 파일 업로드 처리 
 const fs = require('fs');                       // 파일 관리 
 
+const numjucks = require('nunjucks');           // 넌적스(템플릿 엔진)
+
 dotenv.config();
+
+const indexRouter = require('./routes');        // index.js는 생략 가능 
+const userRouter = require('./routes/user');
 
 const app = express();                          // app 객체 생성 
 
 // 서버 포트 설정 
 app.set('port', process.env.PORT || 3000);      
+
+app.set('view engine', 'html');
+
+// 넌적스 설정 
+nunjucks.configure('views', {                   // views 폴더의 경로 설정  
+    express: app,                               // express 속성에 app 객체 연결 
+    watch: true,                                // HTML이 변경되면 템플릿 엔진을 다시 렌더링 수행
+});
 
 // 요청과 응답에 대한 정보를 콘솔에 기록 
 app.use(morgan('dev'));                         // 인수 (dev, combined, common, short, tiny)
@@ -39,6 +52,14 @@ app.use(session({
     },
     name: 'session-cookie',                         // 세션 쿠기 이름 
 }));
+
+app.use('/', indexRouter);                          
+app.use('/user', userRouter);
+
+// 일치하는 라우터가 없을 때 404상태 코드를 응답하는 역할
+app.use((req, res, next) => {
+    res.status(404).send('Not Found');
+});
 
 // 미들웨어는 req, res, next를 매개변수로 가지는 함수 
 app.use((req, res, next) => {

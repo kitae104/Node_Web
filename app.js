@@ -23,10 +23,10 @@ app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
 
 // 넌적스 설정 
-nunjucks.configure('views', {                   // views 폴더의 경로 설정  
+numjucks.configure('views', {                   // views 폴더의 경로 설정  
     express: app,                               // express 속성에 app 객체 연결 
     watch: true,                                // HTML이 변경되면 템플릿 엔진을 다시 렌더링 수행
-});
+}); 
 
 // 요청과 응답에 대한 정보를 콘솔에 기록 
 app.use(morgan('dev'));                         // 인수 (dev, combined, common, short, tiny)
@@ -58,7 +58,17 @@ app.use('/user', userRouter);
 
 // 일치하는 라우터가 없을 때 404상태 코드를 응답하는 역할
 app.use((req, res, next) => {
-    res.status(404).send('Not Found');
+    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+    error.status = 404;
+    next(error);
+});
+
+// 에러 처리 미들웨어 (err를 포함해서 4개의 매개변수)
+app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');                    // error.html 호출 
 });
 
 // 미들웨어는 req, res, next를 매개변수로 가지는 함수 
@@ -77,10 +87,10 @@ app.get('/', (req, res, next) => {
 });
 
 // 에러 처리 미들웨어 (err를 포함해서 4개의 매개변수)
-app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(500).send(err.message);
-});
+// app.use((err, req, res, next) => {
+//     console.log(err);
+//     res.status(500).send(err.message);
+// });
 
 app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트에서 대기 중');

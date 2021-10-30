@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "kitae",
+    "password": "1111",
+    "database": "testdb",
+    "host": "114.71.137.174",
+    "port": "61083",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "kitae",
+    "password": "1111",
+    "database": "testdb",
+    "host": "114.71.137.174",
+    "port": "61083",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "kitae",
+    "password": "1111",
+    "database": "testdb",
+    "host": "114.71.137.174",
+    "port": "61083",
+    "dialect": "mysql"
+  }
+}

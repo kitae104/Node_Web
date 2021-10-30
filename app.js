@@ -12,6 +12,8 @@ const numjucks = require('nunjucks');           // 넌적스(템플릿 엔진)
 
 dotenv.config();
 
+const { sequelize } = require('./models')
+
 const indexRouter = require('./routes');        // index.js는 생략 가능 
 const userRouter = require('./routes/user');
 
@@ -27,6 +29,14 @@ numjucks.configure('views', {                   // views 폴더의 경로 설정
     express: app,                               // express 속성에 app 객체 연결 
     watch: true,                                // HTML이 변경되면 템플릿 엔진을 다시 렌더링 수행
 }); 
+
+sequelize.sync({force:false})
+.then(() => {
+    console.log("데이터베이스 연결 성공");
+})
+.catch((err) => {
+    console.error(err)
+});
 
 // 요청과 응답에 대한 정보를 콘솔에 기록 
 app.use(morgan('dev'));                         // 인수 (dev, combined, common, short, tiny)
